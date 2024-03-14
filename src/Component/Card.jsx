@@ -1,34 +1,49 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const Card = ({ id, image, info, price, name, removeTour }) => {
-    const [readmore, setReadMore] = useState(false);
-    const description = readmore ? info : `${info.substring(0, 200)}....`;
+function Card({ id, image, info, price, name, removeTour }) {
+  const [readmore, setReadMore] = useState(false);
+  const [liked, setLiked] = useState(false);
 
-    function readmoreHandler() {
-        setReadMore(!readmore);
-    }
+  const description = readmore ? info : `${info.substring(0, 200)}....`;
 
+  function toggleLike() {
+    setLiked(!liked);
+    showToast(liked ? `You unliked ${name}` : `You liked ${name}`);
+  }
 
-    return (
-        <div className="card">
-            <img src={image} className="image" alt="img"/>
-            <div className="tourInfo">
-                <div className="tourDetails">
-                    <h4 className="tourPrice">{price}</h4>
-                    <h4 className="tourName">{name}</h4>
-                </div>
-                <div className="description">
-                    {description}
-                    <span className="readMore" onClick={readmoreHandler}>
-                        {readmore ? `show less` : `read more`}
-                    </span>
-                </div>
-            </div>
-            <button className="btnRed" onclick={() => removeTour(id)}>
-                Not Interested
-            </button>
-        </div >
-    );
-};
+  function showToast(message) {
+    toast.info(message);
+  }
+
+  function toggleReadMore() {
+    setReadMore(!readmore);
+  }
+
+  return (
+    <div className="card">
+      <img src={image} className="image" alt={name}></img>
+      <div className="tour-info">
+        <div className="tour-details">
+          <h4 className="tour-prices">{price}</h4>
+          <h4 className="tour-name">{name}</h4>
+        </div>
+        <div className="description">
+          {description}
+          <span className="read-more" onClick={toggleReadMore}>
+            {readmore ? `show less` : `show more`}
+          </span>
+        </div>
+        <button className="btn-like" onClick={toggleLike}>
+          {liked ? "Unlike" : "Like"}
+        </button>
+        <button className="btn-red" onClick={() => removeTour(id)}>
+          Not Interested
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export default Card;
