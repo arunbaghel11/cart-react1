@@ -21,6 +21,11 @@ function Card({ id, image, info, price, name, removeTour }) {
     setReadMore(!readmore);
   }
 
+  function handleRemoveTour() {
+    removeTour(id); // Call the removeTour function with the id of the tour
+    showToast(`Tour "${name}" removed`);
+  }
+
   return (
     <div className="card">
       <img src={image} className="image" alt={name}></img>
@@ -38,7 +43,7 @@ function Card({ id, image, info, price, name, removeTour }) {
         <button className="btn-like" onClick={toggleLike}>
           {liked ? "Unlike" : "Like"}
         </button>
-        <button className="btn-red" onClick={() => removeTour(id)}>
+        <button className="btn-red" onClick={handleRemoveTour}>
           Not Interested
         </button>
       </div>
